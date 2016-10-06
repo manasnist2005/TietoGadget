@@ -1,0 +1,24 @@
+<CartridgeDefinition  
+        Uri="com:tridion:smarttarget:customsearch" 
+        Description="search item type.">
+  <ClaimDefinitions>
+    <ClaimDefinition 
+          Uri="com:tridion:smarttarget:customsearch:category" 
+          Scope="REQUEST"
+          Subject="com:tridion:smarttarget:samples:recommendbooks" 
+          Description="The Most lookedat category" />
+  </ClaimDefinitions>
+  <ClaimProcessorDefinitions>
+    <ClaimProcessorDefinition 
+          Uri="com:tridion:smarttarget:samples:recommendbooks" 
+          ImplementationClass="com.tridion.smarttarget.samples.recommendbooks.RecommendBooksClaimProcessor" 
+          Description="This will put the most looked at category into the claimstore">
+      <RequestStart>
+        <InputClaims />
+        <OutputClaims>
+          <ClaimDefinition Uri="com:tridion:smarttarget:samples:recommendbooks:category" />
+        </OutputClaims>
+      </RequestStart>
+    </ClaimProcessorDefinition>
+  </ClaimProcessorDefinitions>
+</CartridgeDefinition>

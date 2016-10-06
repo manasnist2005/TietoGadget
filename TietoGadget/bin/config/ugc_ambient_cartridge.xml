@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CartridgeDefinition Version="7.1" Uri="tcd:cartridge:ugc" Description="UGC cartridge."
+                     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                     xsi:noNamespaceSchemaLocation="schemas/cd_ambient_cartridge_conf.xsd">
+  <ClaimDefinitions>
+    <ClaimDefinition Uri="taf:claim:contentdelivery:webservice:post:allowed" Scope="REQUEST"
+                     Description="A flag where a POST is allowed to the UGC OData entities."/>
+    <ClaimDefinition Uri="taf:claim:contentdelivery:webservice:user" Scope="REQUEST"
+                     Description="The user posting to the OData service."/>
+    <ClaimDefinition Uri="taf:claim:tracking:internalcontactid" Scope="REQUEST"
+                     Description="The Audience Manager internal contact id."/>
+    <ClaimDefinition Uri="taf:claim:tracking:updatedcontact:xml" Scope="REQUEST"
+                     Description="The Audience Manager updated contact xml."/>
+  </ClaimDefinitions>
+
+  <ClaimProcessorDefinitions>
+    <!-- Allows anonymous posts. Disable when using a login system. -->
+    <ClaimProcessorDefinition Uri="taf:claimprocessor:webservice:ugc:anonymous"
+                              ImplementationClass="com.tridion.ugc.odata.claimprocessor.AllowAnonymousPostClaimProcessor"
+                              Description="Claim processor that allows an anonymous post.">
+      <RequestStart>
+        <OutputClaims>
+          <ClaimDefinition Uri="taf:claim:contentdelivery:webservice:user"/>
+        </OutputClaims>
+      </RequestStart>
+    </ClaimProcessorDefinition>
+
+    <!-- Post allowed by owners. -->
+
+    <ClaimProcessorDefinition Uri="taf:claimprocessor:webservice:ugc:post"
+                              ImplementationClass="com.tridion.ugc.odata.claimprocessor.PostAllowedByOwnerClaimProcessor"
+                              Description="Claim processor that determines if a post is allowed by checking if the user is the owner.">
+      <RequestStart>
+        <InputClaims>
+          <ClaimDefinition Uri="taf:claim:contentdelivery:webservice:user"/>
+        </InputClaims>
+        <OutputClaims>
+          <ClaimDefinition Uri="taf:claim:contentdelivery:webservice:post:allowed"/>
+        </OutputClaims>
+      </RequestStart>
+    </ClaimProcessorDefinition>
+
+
+    <!-- Post allowed by everyone. -->
+    <!--
+        <ClaimProcessorDefinition Uri="taf:claimprocessor:webservice:ugc:post"
+                                  ImplementationClass="com.tridion.ugc.odata.claimprocessor.PostAllowedByEveryoneClaimProcessor"
+                                  Description="Claim processor that allows a post.">
+            <RequestStart>
+                <InputClaims>
+                    <ClaimDefinition Uri="taf:claim:contentdelivery:webservice:user"/>
+                </InputClaims>
+                <OutputClaims>
+                    <ClaimDefinition Uri="taf:claim:contentdelivery:webservice:post:allowed"/>
+                </OutputClaims>
+            </RequestStart>
+        </ClaimProcessorDefinition>
+		-->
+  </ClaimProcessorDefinitions>
+</CartridgeDefinition>

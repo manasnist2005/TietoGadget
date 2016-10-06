@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration Version="7.1"
+               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+               xsi:noNamespaceSchemaLocation="schemas/cd_ugc_conf.xsd">
+    <!--Optional:-->
+	<Comment>
+        <!-- The minimum threshold of a score before it gets flagged for moderation. -->
+        <ScoreMinimumThreshold>-10</ScoreMinimumThreshold>
+        <!-- HTML white list -->
+        <Whitelist>
+            <!-- Allow a link. -->
+            <Tag Name="a">
+                <!-- Allow a link's href attribute. -->
+                <Attribute Name="href">
+                    <!-- Allow a link's href attribute to link to the http protocol. -->
+                    <Protocol Name="http"/>
+                </Attribute>
+                <!-- Set attribute 'rel' to value 'nofollow'. -->
+                <Attribute Name="rel" EnforcedValue="nofollow"/>
+                <!-- Set attribute 'target' to value '_blank'. -->
+                <Attribute Name="target" EnforcedValue="_blank"/>
+            </Tag>
+            <!-- Allow bold. -->
+            <Tag Name="b"/>
+            <!-- Allow line break. -->
+            <Tag Name="br"/>
+            <!-- Allow italic. -->
+            <Tag Name="i"/>
+            <!-- Allow underlined. -->
+            <Tag Name="u"/>
+        </Whitelist>
+    </Comment>
+	
+	<!-- 
+	   This node holds vital information for the presentation site. Specifies URL needed for connecting 
+	   to the UGC webservice and security settings in case security settings are present it. 
+	   This node has the following attributes:
+                URL                The URL of the odata.svc endpoint where the UGC data can be queried.
+                ConnectTimeout     Set the connect timeout interval, in milliseconds (optional).
+                ReadTimeout        Set the read timeout interval, in milliseconds (optional). 
+    -->
+    <ODataEndpoint URL="http://localhost:88/odata.svc">
+    
+        <!--Optional:-->
+        <!-- 
+            This node configures the security access token endpoint in case security settings are present 
+            on the UGC webservice. This node has the following attributes:
+                    Endpoint           The URL of the authentication endpoint where an access token can be retrieved.
+                    ClientId           The client id for the token request.
+                    ClientSecret       The client secret for the token request
+        <Security Endpoint="http://localhost:88/access_token" ClientId="YOUR_CLIENT_ID" ClientSecret="YOUR_CLIENT_SECRET"/>
+        -->
+    </ODataEndpoint>
+
+
+    <!--Optional:-->
+    <!--
+        This node configures what ADF claims should be forwarded to the UGC webservice, when a request is made from the
+            UGC presentation website.
+ -->
+    <ForwardedClaims CookieName="TAFContext">
+        <Claim Uri="taf:tracking:id"/>
+    </ForwardedClaims>
+   
+
+    <!--Optional:-->
+    <!-- 
+	This node configures the validations for comments and ratings. It is possible to prevent double commenting and rating or 
+	limit time between commenting or rating same item by same user. 
+	-->
+    <!-- 
+    <ContentValidators>
+    -->
+    	<!-- 
+		By enabling this validator on your web service you can control double commenting. You can define behavior by configuring <Timeout> value:
+		Default value: 60000ms (1 min) - visitor will be able to post next comment after 1 min passes;
+		If this is -1 then we never allow multiple comments by same user on same item;
+		If this is 0 then we allow unlimited commenting;
+		If this is >0 then visitor will be able to post next comment after timeout passes(should be specified in ms);
+		-->
+		<!-- -->
+    	<ContentValidator Implementation="com.tridion.ugc.validation.DoubleCommentingValidator">
+    		<Timeout>60000</Timeout>
+    	</ContentValidator>
+    	
+    	 
+    	<!-- 
+		By enabling this validator on your web service you can control double rating. You can define behavior by configuring <Timeout> value:
+		Default value: -1 - never allow multiple ratings by same user on same item;
+		If this is -1 then we never allow multiple ratings by same user on same item;
+		If this is 0 then we allow unlimited rating;
+		If this is >0 then visitor will be able to post next rating after timeout passes(should be specified in ms);
+		-->
+		<!-- -->
+    	<ContentValidator Implementation="com.tridion.ugc.validation.DoubleRatingValidator">
+    		<Timeout>-1</Timeout>
+    	</ContentValidator>
+    	
+    	
+    	<!-- 
+		By enabling this validator on your web site you can prohibit double voting on comments. 
+		-->
+		<!-- -->
+    	<ContentValidator Implementation="com.tridion.ugc.taglib.validation.DoubleCommentVotingValidator"/>
+    	
+    <!-- 
+    </ContentValidators>
+    -->
+</Configuration>

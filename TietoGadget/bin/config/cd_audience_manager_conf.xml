@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration Version="6.0">
+	<!-- URL of the image to display in an e-mail (to track when it is opened) -->
+	<Email>
+		<OpenImage>MailOpened.gif</OpenImage>
+	</Email>
+	<Redirect>
+		<!-- URL to redirect to when a Component Link cannot be resolved -->
+		<ErrorResolvingLink>Resolve.html</ErrorResolvingLink>
+		<!-- URL to redirect to when a MultiMedia Component Link cannot be resolved -->
+		<ErrorResolvingBinary>Empty.gif</ErrorResolvingBinary>
+		<!-- URL to redirect to in case of a general error -->
+		<GeneralError>Error.html</GeneralError>
+		<!-- Whether or not the TrackingInfo parameter should be added to the URL when redirecting -->
+		<AppendTrackingInfo>false</AppendTrackingInfo>
+	</Redirect>
+	<ExtendedDetails>
+		<!-- Name of extended details field that contains the e-mail address -->
+		<EmailAddressFieldName>MAIL</EmailAddressFieldName>
+		<!-- Name of extended details field(s) used for Contact identification. -->
+		<!-- These are always considered mandatory fields -->
+		<ContactIdentification>
+			<Field>IDENTIFICATION_KEY</Field>
+			<Field>IDENTIFICATION_SOURCE</Field>
+		</ContactIdentification>
+	</ExtendedDetails>
+</Configuration>

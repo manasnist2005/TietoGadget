@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true">
+    <!-- Properties -->
+    <property name="log.pattern" value="%date %-5level %logger{0} - %message%n"/>
+    <property name="log.history" value="7"/>
+    <property name="log.folder" value="C:/Tridion/Log/CD_Preview"/>
+    <property name="log.level" value="ERROR"/>
+    <property name="log.encoding" value="UTF-8"/>
+
+    <!-- Appenders -->
+    <appender name="rollingTransportLog" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${log.folder}/cd_transport.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>${log.history}</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <charset>${log.encoding}</charset>
+            <pattern>${log.pattern}</pattern>
+        </encoder>
+        <prudent>true</prudent>
+    </appender>
+    <appender name="rollingDeployerLog" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${log.folder}/cd_deployer.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>${log.history}</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <charset>${log.encoding}</charset>
+            <pattern>${log.pattern}</pattern>
+        </encoder>
+        <prudent>true</prudent>
+    </appender>
+    <appender name="rollingMonitorLog" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${log.folder}/cd_monitor.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>${log.history}</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <charset>${log.encoding}</charset>
+            <pattern>${log.pattern}</pattern>
+        </encoder>
+        <prudent>true</prudent>
+    </appender>
+    <appender name="rollingCoreLog" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${log.folder}/cd_core.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>${log.history}</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <charset>${log.encoding}</charset>
+            <pattern>${log.pattern}</pattern>
+        </encoder>
+        <prudent>true</prudent>
+    </appender>
+    <appender name="rollingSessionPreviewLog" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${log.folder}/cd_preview.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>${log.history}</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <charset>${log.encoding}</charset>
+            <pattern>${log.pattern}</pattern>
+        </encoder>
+        <prudent>true</prudent>
+    </appender>
+	<appender name="rollingSmartTargetLog" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${log.folder}/smarttarget.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>${log.history}</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${log.pattern}</pattern>
+        </encoder>
+        <prudent>true</prudent>
+    </appender>
+    <!-- Loggers -->
+    <logger name="com.tridion" level="${log.level}"/>
+    <logger name="com.tridion.transport">
+        <appender-ref ref="rollingTransportLog"/>
+    </logger>
+    <logger name="com.tridion.transport.HTTPSReceiverServlet">
+        <appender-ref ref="rollingDeployerLog"/>
+    </logger>
+    <logger name="com.tridion.transport.transportpackage">
+        <appender-ref ref="rollingDeployerLog"/>
+    </logger>
+    <logger name="com.tridion.transformer">
+        <appender-ref ref="rollingDeployerLog"/>
+    </logger>
+    <logger name="com.tridion.deployer">
+        <appender-ref ref="rollingDeployerLog"/>
+    </logger>
+    <logger name="com.tridion.tcdl">
+        <appender-ref ref="rollingDeployerLog"/>
+    </logger>
+    <logger name="com.tridion.event">
+        <appender-ref ref="rollingDeployerLog"/>
+    </logger>
+    <logger name="com.tridion.monitor">
+        <appender-ref ref="rollingMonitorLog"/>
+    </logger>
+    <logger name="Tridion.ContentDelivery" level="${log.level}">
+        <appender-ref ref="rollingCoreLog"/>
+    </logger>
+    <logger name="com.tridion.preview">
+        <appender-ref ref="rollingSessionPreviewLog"/>
+    </logger>
+    <logger name="com.tridion.storage.persistence.session">
+        <appender-ref ref="rollingSessionPreviewLog"/>
+    </logger>
+	<!-- all .Net logs through Juggernet -->
+    <logger name="Tridion.SmartTarget" level="${log.level}">
+        <appender-ref ref="rollingSmartTargetLog"/>
+    </logger>
+    <root level="ON">
+        <appender-ref ref="rollingCoreLog"/>
+		<appender-ref ref="rollingTransportLog"/>
+		<appender-ref ref="rollingDeployerLog"/>
+		<appender-ref ref="rollingSmartTargetLog"/>
+    </root>
+</configuration>

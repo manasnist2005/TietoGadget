@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration Version="7.1"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="schemas/cd_storage_conf.xsd">
+    <Global>
+        <!--Optional:-->
+        <ObjectCache Enabled="true">
+            <!--Optional:-->
+            <Policy Type="LRU" Class="com.tridion.cache.LRUPolicy">
+				<!--
+					The maximum size of memory used by the cache. The string must consist a number 
+					followed by units: "k" or "kb" for kilobytes; "m" or "mb" for megabytes (case insensitive)
+				-->
+				<Param Name="MemSize" Value="16mb"/>
+			</Policy>
+			
+            <!--Optional:-->
+            <!-- The Features element specifies classes that add additional functionality to the cache. -->
+			<Features>
+				<Feature Type="DependencyTracker" Class="com.tridion.cache.DependencyTracker"/>
+			</Features>
+           
+        </ObjectCache>
+        
+        <Storages>
+            <!--
+            Optional
+            Overriding default Tridion dao bundles.
+            -->
+            <StorageBindings>                
+                <Bundle src="preview_dao_bundle.xml"/>
+              <Bundle src="AudienceManagerDAOBundle.xml"/>
+			  <Bundle src="ugc_dao_bundle.xml"/>
+            </StorageBindings>
+			
+	<Wrappers>
+		<Wrapper Name="SessionWrapper">
+			<Storage Type="persistence" Id="sessionDb" dialect="MSSQL" Class="com.tridion.storage.persistence.JPADAOFactory">
+				<Pool Type="jdbc" Size="5" MonitorInterval="60" IdleTimeout="120" CheckoutTimeout="120" />
+				<DataSource Class="com.microsoft.sqlserver.jdbc.SQLServerDataSource">
+					<Property Name="serverName" Value="WSV000839" />
+					<Property Name="portNumber" Value="1433" />
+					<Property Name="databaseName" Value="Tridion_BrokerEM"/>
+					<Property Name="user" Value="TridionBrokerUser"/>
+					<Property Name="password" Value="Tridion!232!"/>
+				</DataSource>
+			</Storage>
+		</Wrapper>
+	</Wrappers>
+	
+			<Storage Type="persistence" Id="defaultdb" dialect="MSSQL" Class="com.tridion.storage.persistence.JPADAOFactory">
+				<Pool Type="jdbc" Size="10" MonitorInterval="60" IdleTimeout="120" CheckoutTimeout="120" />
+				<DataSource Class="com.microsoft.sqlserver.jdbc.SQLServerDataSource">
+					<Property Name="serverName" Value="WSV000839" />
+					<Property Name="portNumber" Value="1433" />
+					<Property Name="databaseName" Value="Tridion_Broker_Staging" />
+					<Property Name="user" Value="TridionBrokerUser" />
+					<Property Name="password" Value="Tridion!232!" />
+				</DataSource>
+			</Storage>
+
+          <!-- Profile DB MSSQL -->
+          <Storage Id="profiledbmssql" Class="com.tridion.storage.persistence.JPADAOFactory" Type="persistence"
+                   dialect="MSSQL">
+            <Pool CheckoutTimeout="120" IdleTimeout="120" MonitorInterval="60" Size="10" Type="jdbc"/>
+            <DataSource Class="com.microsoft.sqlserver.jdbc.SQLServerDataSource">
+              <Property Name="serverName" Value="WSV000839"/>
+              <Property Name="portNumber" Value="1433"/>
+              <Property Name="databaseName" Value="tridion_submgmt"/>
+              <Property Name="user" Value="TMSSMUSER"/>
+              <Property Name="password" Value="Tridion!232!"/>
+            </DataSource>
+          </Storage>
+
+          <!-- Tracking DB MSSQL -->
+          <Storage Id="trackingdbmssql" Class="com.tridion.storage.persistence.JPADAOFactory" Type="persistence"
+                   dialect="MSSQL">
+            <Pool CheckoutTimeout="120" IdleTimeout="120" MonitorInterval="60" Size="10" Type="jdbc"/>
+            <DataSource Class="com.microsoft.sqlserver.jdbc.SQLServerDataSource">
+              <Property Name="serverName" Value="WSV000839"/>
+              <Property Name="portNumber" Value="1433"/>
+              <Property Name="databaseName" Value="tridion_tracking"/>
+              <Property Name="user" Value="TMSPSUSER"/>
+              <Property Name="password" Value="Tridion!232!"/>
+            </DataSource>
+          </Storage>
+		  <!-- For UGC -->
+		  <Storage Type="persistence" Id="ugcdefaultdb" dialect="MSSQL" Class="com.tridion.storage.persistence.JPADAOFactory">
+				<Pool Type="jdbc" Size="10" MonitorInterval="60" IdleTimeout="120" CheckoutTimeout="120" />
+				<DataSource Class="com.microsoft.sqlserver.jdbc.SQLServerDataSource">
+					<Property Name="serverName" Value="WSV000839" />
+					<Property Name="portNumber" Value="1433" />
+					<Property Name="databaseName" Value="Tridion_Ugc" />
+					<Property Name="user" Value="TridionUgcUser" />
+					<Property Name="password" Value="Tridion!232!" />
+				</DataSource>
+			</Storage>
+			
+			<Storage Type="filesystem" Class="com.tridion.storage.filesystem.FSDAOFactory" Id="defaultFile" defaultFilesystem="false">
+				<Root Path="c:\Tridion_File_Deployer\DD4T_Staging" />
+			</Storage>
+            <Storage Type="filesystem" Class="com.tridion.storage.filesystem.FSDAOFactory" Id="defaultDataFile" defaultFilesystem="true" defaultStorage="true">
+				<Root Path="c:\Tridion_File_Deployer\DDD4T_Staging\data" />
+			</Storage>			
+			
+        </Storages>
+		<!-- This configures the taxonomy reference count for keywords, if CountEnabled is 
+		set to False the reference count for keywords will not get updated. The default setting is keyword counts are enabled. --> 
+		<!--<Taxonomies CountEnabled="false"/>-->
+		
+		<!-- Configures transaction storage settings, how long before a transaction gets rolledback and on which interval to monitor for
+		outstanding transactions. Default timeout is 120000 ms. (2 minutes) and Default interval is 5000ms. (5 seconds) -->
+		<!-- <Transaction Timeout="120000" MonitorInterval="5000"/> -->
+    </Global>
+	<!-- If no item type mappings are defined within ItemTypes or if storages on a lower level do not exist then the storage defined by defaultStorageId attribute will be used.
+		 If storage defined by defaultStorageId does not exist then exception will be thrown. -->
+    <ItemTypes defaultStorageId="defaultdb" cached="false">
+      <Item typeMapping="AudienceManagerProfile" storageId="profiledbmssql"/>
+      <Item typeMapping="AudienceManagerTracking" storageId="trackingdbmssql"/>
+      <Item typeMapping="Personalization" cached="false" storageId="defaultdb"/>
+      <Item typeMapping="Comment" cached="false" storageId="ugcdefaultdb" />
+		<Item typeMapping="Rating" cached="false" storageId="ugcdefaultdb" />
+		<Item typeMapping="UGCUser" cached="false" storageId="ugcdefaultdb" />
+		<Item typeMapping="UGCItemStats" cached="false" storageId="ugcdefaultdb" />   </ItemTypes>
+    
+    <!-- Specifies the location of the license file. -->
+    <!--
+    <License Location="c:/Tridion/config/cd_licenses.xml"/>
+    -->
+</Configuration>

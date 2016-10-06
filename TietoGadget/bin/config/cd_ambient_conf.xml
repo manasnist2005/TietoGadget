@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<Configuration Version="7.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="schemas/cd_ambient_conf.xsd">
+	
+  <ExcludedPaths>
+    <!--For Java -->
+    <!--<Path>/httpupload</Path>
+        <Path>/access_token</Path>-->
+    <!--For .NET -->
+    <!--<Path>/httpupload.aspx</Path>
+        <Path>/access_token.svc</Path>-->
+  </ExcludedPaths>
+  <Cartridges>
+    <!-- Example cartridge definition -->
+    <!-- You can hook into and use the Ambient Data Framework by implementing cartridges. 
+        This is how a cartridge XML configuration files can be specified. -->
+    <!--
+		<Cartridge File="cd_ambient_cartridge_conf.xml"/>
+		-->
+    <!-- UGC cartridge definition. 
+   <Cartridge File="ugc_ambient_cartridge1.xml" />
+   <Cartridge File="/customCatridge_UserAge.xml"/>-->
+
+         
+   
+    <Cartridge File="cd_webservice_preview_cartridge.xml"/>
+    <Cartridge File="footprint_cartridge_conf.xml"/>
+    <Cartridge File="session_cartridge_conf.xml"/>    
+    <Cartridge File="/audiencemanager_cartridge_conf.xml"/>
+    <Cartridge File="ugc_ambient_cartridge.xml"/>
+  </Cartridges>
+
+  <!-- Cookies settings -->
+  
+    <Cookies>
+      
+         <!--<CookieClaim DefaultValue="true" Name="CookieClaim"/>
+        <Cookie Type="Tracking" Name="myTrackingCookie" Path="/"/>
+        <Cookie Type="Session" Name="mySessionCookie" Path="/"/>-->
+        <Cookie Type="ADF" Name="TAFContext" />
+    </Cookies>
+
+    <!--
+     This setting should be used only in combination with the New UI 2012
+     -->
+    <!--
+    <ClaimStoreProvider>com.tridion.preview.web.ambient.PreviewClaimStoreProvider</ClaimStoreProvider>
+    -->
+</Configuration>

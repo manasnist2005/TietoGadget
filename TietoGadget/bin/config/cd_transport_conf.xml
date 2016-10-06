@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- The Tridion Content Distributor Transport Service configuration specifies all
+    configuration values required to initiate and handle a publishing action. -->
+<TransportService Version="7.1"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="schemas/cd_transport_conf.xsd">
+	<!-- The WorkFolder element defines the location where temporary files are stored. -->
+	<WorkFolder Location="./transactions" NotificationBatchSize="10" />
+	
+	<!--Optional:-->
+	<!--
+		Specifies the maximum number of transport workers for the available pools.
+		
+		The TransportPriorityPoolSize can also be set to unlimited by configuring the poolsize to 0. This will allow
+		unlimited amount of parallel transports to take place.
+	<Workers NormalPriorityPoolSize="5" HighPriorityPoolSize="5" TransportPriorityPoolSize="5"/>
+	-->
+	
+	<!-- Specifies the polling attempts and timeout in minutes and interval between polls in milliseconds -->
+	<Polling MaxAttempts="900" Timeout="15" Interval="5000"/>
+	<!-- The Senders section defines the installed Sender types. Senders are configured in
+	     the Management System interface as Publication Target Destinations. -->
+	<Senders>
+		<!-- Install custom Senders by providing a 'Type' that matches the root
+			 element name of a Management System Protocol Schema. The 'Class'
+			 attribute specifies the Java class that implements the functionality
+			 for a Sender. Make sure the class is registered on the system
+			 CLASSPATH environment variable. -->
+		<Sender Type="Local" Class="com.tridion.transport.connection.connectors.FileTransportConnector"/>
+		<Sender Type="HTTP" Class="com.tridion.transport.connection.connectors.HTTPSTransportConnector"/>
+		<Sender Type="HTTPS" Class="com.tridion.transport.connection.connectors.HTTPSTransportConnector">
+			<!--
+			<Pooling MaxDestinationConnections="20" MaxTotalConnections="200"/> 
+			 -->
+		</Sender>
+		<Sender Type="FTP" Class="com.tridion.transport.connection.connectors.FTPTransportConnector"/>
+		<Sender Type="SFTP" Class="com.tridion.transport.connection.connectors.SFTPTransportConnector"/>
+		<Sender Type="SSHFTP" Class="com.tridion.transport.connection.connectors.SSHFTPTransportConnector"/>
+	</Senders>
+	
+	<!--
+	Specifies the location of the license file.
+	-->
+	<License Location="c:/tridion/licences/cd_licenses.xml"/>
+</TransportService>
