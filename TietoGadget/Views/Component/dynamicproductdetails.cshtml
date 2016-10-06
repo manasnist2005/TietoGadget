@@ -1,0 +1,70 @@
+﻿@model DD4T.ContentModel.IComponentPresentation
+@using TietoGadget.Helpers;
+@using DD4T.Mvc.Html;
+@using DD4T.ContentModel;
+@Html.SiteEditComponentPresentation(Model)
+
+
+<div class="container marketing">
+    <div class="row">
+        @{
+
+            var compId = string.Empty;
+            if (Session["compId"] != null)
+            {
+                compId = Session["compId"].ToString();
+            }
+            if (compId != string.Empty)
+            {
+
+                var comp = CommonHelper.GetComponent(compId);
+
+                @Html.SiteEditComponentPresentation(comp, "tcm:2033-4629-32", true, "");
+
+                if (comp.Fields.Keys.Contains("header"))
+                {
+                 var field = comp.Fields["header"];
+
+                 <h1>@Html.SiteEditField(comp, field)@field.Value.ToString()</h1>
+                }
+                if (comp.Fields.Keys.Contains("description"))
+                {
+                 var field = comp.Fields["description"];
+                 <p>
+                     @Html.SiteEditField(comp, field)@field.Value.ToString()
+                 </p>
+                }
+                <div class="row">
+                    @{
+                        if (comp.Fields.Keys.Contains("productimage"))
+                          {
+                            var fieldSet = comp.Fields["productimage"].LinkedComponentValues;
+                            foreach (var field in fieldSet)
+                            {
+                              <div class="col-md-2">
+                              @Html.SiteEditField(comp, comp.Fields["productimage"])
+                              <img src="@field.Multimedia.Url" width="200px" height="160px" alt="@field.Title" />
+                              </div>
+                            }
+                          }
+                     }
+                </div>
+                if (comp.Fields.Keys.Contains("productparam"))
+                    {
+                        var fieldSet = comp.Fields["productparam"].EmbeddedValues;
+                        foreach (var field in fieldSet)
+                          {
+                            <div>
+                            @Html.SiteEditField(comp, comp.Fields["productparam"])
+                            <h3> @field["key"].Value.ToString() :</h3>  @field["value"].Value.ToString()
+                            </div>
+                          }
+                    }
+               
+          
+
+            } 
+        }
+    </div>
+        
+</div>

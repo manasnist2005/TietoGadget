@@ -1,0 +1,74 @@
+﻿@model DD4T.ContentModel.IComponentPresentation
+
+@using DD4T.Mvc.Html;
+@using TietoGadget.Helpers;
+@using TietoGadget.Controllers;
+
+@*@UGCHelper.ReturnComments()*@
+<div class="container fill">
+    <div class="row">
+        <div class="col-md-3">
+            <b>Page Rating: <label id="lblRating"></label></b>
+        </div>        
+        <div id="rateYo" class="col-md-9">           
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-md-3">
+            <h5><u><b>COMMENTS</b></u> </h5>          
+        </div>
+        <div class="col-md-9">
+            <button type="button" id="btnAddComment" class="btn btn-default pull-right">Add Comment</button>
+        </div>
+    </div>
+    <br />   
+    @*<table id="grid" data-source="/UGC/GetComments"></table>*@ <table id="grid"></table>     
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="SaveModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Enter your comment</h4>
+            </div>
+            <div class="modal-body">
+                <form>                    
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="content" placeholder="Comment">
+                    </div>                    
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" id="btnSave" class="btn btn-primary">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="EditModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Edit your comment</h4>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <input type="hidden" id="commentId" />
+                    <input type="hidden" id="ItemId" />
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="contentedit" placeholder="Comment">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" id="btnEdit" class="btn btn-primary">Save</button>
+            </div>
+        </div>
+    </div>
+</div>  

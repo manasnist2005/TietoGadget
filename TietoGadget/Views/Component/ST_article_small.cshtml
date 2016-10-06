@@ -1,0 +1,32 @@
+﻿@model DD4T.ContentModel.IComponent
+
+@using DD4T.Mvc.Html
+@Html.SiteEditComponentPresentation(Model, "tcm:2033-4628-32", "Main promotion")
+<div class="col-sm-6 col-md-4">
+    @if (Model.Fields.ContainsKey("image"))
+    {
+        var imgfield = Model.Fields["image"];
+        @Html.SiteEditField(Model, imgfield)
+        <img height="200" src="@imgfield.LinkedComponentValues[0].Multimedia.Url" />
+    }
+    @if (Model.Fields.ContainsKey("header"))
+    {
+        var field = Model.Fields["header"];
+        <h4> @Html.SiteEditField(Model, field)@field.Value.ToString()</h4>
+    }
+    @if (Model.Fields.ContainsKey("linkUrl"))
+    {
+        var field = Model.Fields["linkUrl"];
+        <p> @Html.SiteEditField(Model, field)<a class="btn" href="@field.Value">View details &raquo;</a></p>
+    }
+</div>
+
+
+
+
+
+
+
+
+
+

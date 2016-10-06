@@ -1,0 +1,18 @@
+﻿@model DD4T.ContentModel.IPage
+@using DD4T.Mvc.Html
+@using TietoGadget.Helpers;
+@*
+    This is a very basic Page View, you may delete this if you wish.
+*@
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@*@Html.Raw(@ExperienceManagerHelper.GetRegionMarkUp("HomePage"))*@
+@Html.RenderComponentPresentations()
+@Html.SiteEditPage(Model)
+
+<section id="homepagePromotions">
+    <!-- Start Promotion Region: { "RegionID": "Header" } -->
+    @Html.RenderSmartTargetRegionUsingView("Header", "Banner")
+    <!-- End SiteEdit Promotional Region -->
+</section>

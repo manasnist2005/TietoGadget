@@ -1,0 +1,43 @@
+﻿@model DD4T.ContentModel.IComponentPresentation
+@using TietoGadget.Helpers;
+
+@{
+    var compId = string.Empty;
+    if (Session["compId"] != null)
+    {
+        compId = Session["compId"].ToString();
+    }
+    if (compId != string.Empty)
+    {
+        var comp = CommonHelper.GetComponent(compId);
+        if (comp.Fields["header"] != null)
+        {
+            var field = comp.Fields["header"];
+            <h1>@field.Value.ToString()</h1>
+        }
+        if (comp.Fields["description"] != null)
+        {
+            var field = comp.Fields["description"];
+            <p>@field.Value.ToString()</p>
+        }
+        if (comp.Fields["productimage"] != null)
+        {
+            var fieldSet = comp.Fields["productimage"].LinkedComponentValues;
+            foreach (var field in fieldSet)
+            {
+                <img src="@field.Multimedia.Url" width="200px" height="160px" alt="@field.Title" />
+            }
+
+        }
+        if (comp.Fields["productparam"] != null)
+        {
+            var fieldSet = comp.Fields["productparam"].EmbeddedValues;
+            foreach (var field in fieldSet)
+            {
+                <h3> @field["key"].Value.ToString() :</h3>  @field["value"].Value.ToString()
+            }
+
+        }
+    }
+}
+

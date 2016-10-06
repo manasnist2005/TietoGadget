@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<siteEdit enabled="true" style="SiteEdit2012" tridionHostUrl="http://WSV001200.SP15DEV.Local">
+  <contextPublications>
+    <contextPublication id="2033" pagePublication="2033" componentPublication="2033" publishPublication="2033"/>
+  </contextPublications>
+</siteEdit>

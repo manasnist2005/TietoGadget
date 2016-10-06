@@ -1,0 +1,11 @@
+﻿@model DD4T.ContentModel.IPage
+@using DD4T.Mvc.Html
+@using TietoGadget.Helpers;
+@*
+    This is a very basic Page View, you may delete this if you wish.
+*@
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@Html.RenderComponentPresentations()
+@Html.SiteEditPage(Model)

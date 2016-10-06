@@ -1,0 +1,42 @@
+﻿@model DD4T.ContentModel.IComponentPresentation
+
+@using DD4T.Mvc.Html;
+
+@Html.SiteEditComponentPresentation(Model)
+@{ 
+    if (Model.Component.Fields.ContainsKey("title"))
+    {
+        var field = Model.Component.Fields["title"];
+
+        <h2>@Html.SiteEditField(Model.Component, field)@field.Value.ToString()</h2>
+    }
+
+    if (Model.Component.Fields.ContainsKey("image"))
+    {
+        
+            var fields = Model.Component.Fields["image"];
+           
+            foreach (var field in fields.LinkedComponentValues)
+            {
+            <div class="span4">                
+                <img class="img-circle" src="@field.Multimedia.Url" />
+            </div>
+            }
+       
+    }
+
+    if (Model.Component.Fields.ContainsKey("description"))
+    {
+        var field = Model.Component.Fields["description"];
+        <p>@Html.SiteEditField(Model.Component, field)@field.Value.ToString()</p>
+    }
+
+}
+
+
+
+
+
+
+
+

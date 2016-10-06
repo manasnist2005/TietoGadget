@@ -1,0 +1,32 @@
+﻿@model DD4T.ContentModel.IComponentPresentation
+
+@using DD4T.Mvc.Html;
+@using TietoGadget.Helpers;
+
+<div class="span4">
+               
+               @Html.SiteEditComponentPresentation(Model)               
+                @if (Model.Component.Fields.ContainsKey("header"))
+                {
+                    var field = Model.Component.Fields["header"];
+                                  
+                      <h2>@Html.SiteEditField(Model.Component, field)@field.Value.ToString()</h2> 
+                }                
+                @if (Model.Component.Fields.ContainsKey("description"))
+                {
+                    var field = Model.Component.Fields["description"];
+                      
+                    <p>@Html.SiteEditField(Model.Component, field)@field.Value.ToString()</p>
+                }
+                    @if (Model.Component.Fields.ContainsKey("linkUrl"))
+                    {
+                        var field = Model.Component.Fields["linkUrl"];
+                        <a class="btn"  href="@field.Value">@Html.SiteEditField(Model.Component, field)View details &raquo;</a>
+                }
+    <tridion:incrementkey runat="server" itemuri="tcm:2033-4836-64" name="Article1" componenturi="tcm:2033-4828" />
+                
+   </div>
+
+
+
+      

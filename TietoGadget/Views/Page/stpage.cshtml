@@ -1,0 +1,23 @@
+﻿@model DD4T.ContentModel.IPage
+@using DD4T.Mvc.Html
+@using TietoGadget.Helpers;
+@Html.SiteEditPage(Model)
+
+
+
+@*
+    This is a very basic Page View, you may delete this if you wish.
+*@
+@section Title
+    {
+    @Model.Title
+}
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    Session["pageuri"] = Model.Id;
+}
+<div class="container marketing">   
+     @Html.RenderComponentPresentationsByView("ST_promotion")
+    </div>
+
+

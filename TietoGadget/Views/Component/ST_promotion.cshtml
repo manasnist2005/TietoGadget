@@ -1,0 +1,37 @@
+﻿@model DD4T.ContentModel.IComponentPresentation
+
+@using DD4T.Mvc.Html;
+@using TietoGadget.Helpers
+@{
+    var viewname = string.Empty; var regionname= string.Empty; 
+    var maxitem =0; var minitem = 0;
+    if (Model.Component.Fields.ContainsKey("view"))
+    {
+        viewname = Model.Component.Fields["view"].Value.ToString();
+    }
+    if (Model.Component.Fields.ContainsKey("region"))
+    {
+         regionname = Model.Component.Fields["region"].Value.ToString();
+    }
+    if (Model.Component.Fields.ContainsKey("maxitem"))
+    {
+         maxitem = Int32.Parse(Model.Component.Fields["maxitem"].Value.ToString());
+    }
+    if (Model.Component.Fields.ContainsKey("minitem"))
+    {
+         minitem =Int32.Parse(Model.Component.Fields["minitem"].Value.ToString());
+    }
+
+}
+ <!-- Start Promotion Region: { "RegionID": "HomepagePromotions" } -->
+@Html.RenderSmartTargetRegionUsingView(regionname, viewname,Session["pageuri"].ToString(), maxitem, minitem)
+<!-- End SiteEdit Promotional Region -->
+
+
+
+
+
+
+
+
+

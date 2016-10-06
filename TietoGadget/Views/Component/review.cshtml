@@ -1,0 +1,23 @@
+﻿@model DD4T.ContentModel.IComponentPresentation
+
+@using DD4T.Mvc.Html;
+
+   <div class="container marketing">
+    <div class="row">
+            <div class="span4">              
+                @Html.SiteEditComponentPresentation(Model)
+                @if (Model.Component.Fields.ContainsKey("write"))
+                {
+                    var field = Model.Component.Fields["write"];
+                    
+                      <h2>@Html.SiteEditField(Model.Component, field)@field.Value.ToString()</h2> 
+                }                
+                @if (Model.Component.Fields.ContainsKey("reviewerName"))
+                {
+                    var field = Model.Component.Fields["reviewerName"];
+                   
+                    <p>@Html.SiteEditField(Model.Component, field)@field.Value.ToString()</p>
+                }                
+            </div>
+        </div>   
+   </div>

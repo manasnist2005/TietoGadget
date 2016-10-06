@@ -1,0 +1,48 @@
+﻿@model TietoGadget.Models.User
+
+
+@section Title
+    {
+    User Subscription
+}
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="container marketing">
+
+
+    <div class="span6">
+        
+        @using (Html.BeginForm("Subscribe", "LogIn", "POST"))
+        {
+           
+            <fieldset>
+                <legend>Subscribe For :</legend>
+                
+                    @for (int i = 0; i < Model.UserPreferences.Count; i++)
+                    {
+                        <div class="row">
+                            
+                                @Html.HiddenFor(m => m.UserPreferences[i].TcmId)
+                                @Html.CheckBoxFor(m => m.UserPreferences[i].IsChecked)
+                                @Html.LabelFor(m => m.UserPreferences[i].IsChecked, Model.UserPreferences[i].Category)
+                            
+                        </div>
+                    }
+               
+                    <br/>
+                   @if (Request.UrlReferrer != null)
+                   {
+                    string referer = Request.UrlReferrer.ToString();
+                    <button type="submit" class="btn btn-primary btn-md">Subscribe</button>@ViewBag.SubscriptionMessage
+                    <a href=@referer> Cancel</a>
+                   }
+                   else
+                   {
+                    <button type="submit" class="btn btn-primary btn-md">Subscribe</button>@ViewBag.SubscriptionMessage
+                   }
+                   </fieldset>
+        }
+    </div>
+</div>
+

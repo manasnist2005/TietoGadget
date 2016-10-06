@@ -1,0 +1,94 @@
+﻿@model DD4T.ContentModel.IComponentPresentation
+@using TietoGadget.Helpers;
+@using DD4T.Mvc.Html;
+@using DD4T.ContentModel;
+@Html.SiteEditComponentPresentation(Model)
+
+
+@{
+    var prodcut_cat = Model.Component.Fields["product_category"].Value;
+    var prodcut_cat_path = Model.Component.Fields["product_details_Path"].Value;
+    List<string> compList = null;
+    if (Session["productlist"] != null)
+    {
+        compList = (List<string>)Session["productlist"];
+    }
+}
+
+<div class="container marketing">
+    
+        <div class="row">
+        @{
+        foreach (var compId in compList)
+        {
+            DD4T.ContentModel.IComponent comp = CommonHelper.GetComponent(compId);
+           
+            if (comp.MetadataFields["product_category"].Value == prodcut_cat)
+            {
+               
+               
+                <div class="item-wrapper col-sm-6 col-md-4">
+                    @Html.SiteEditComponentPresentation(comp, "tcm:2033-4628-32", true, "")
+                 @{
+
+                if (comp.Fields.Keys.Contains("linkdata"))
+                {
+                    var field = comp.Fields["linkdata"];
+                    string url = prodcut_cat_path + field.Value.ToString();
+
+                    for (int counter = 0; counter < comp.Fields["linkdata"].LinkedComponentValues.Count; counter++)
+                    {
+                        <div>
+                      
+                            @{
+                            IComponent cmp= comp.Fields["linkdata"].LinkedComponentValues[counter];
+                            @Html.SiteEditComponentPresentation(cmp, "tcm:2033-4628-32", true, "")
+                            var field1 = cmp.Fields["header"]; 
+                            <span><a href="@url" onClick = "ga('send', 'event', { eventCategory: '@compId', eventAction: '@field1.Value Click', eventLabel: 'Clicked'});">@Html.SiteEditField(cmp, field1, counter)@field1.Value</a></span>
+                                }
+                        </div>
+                    }
+
+                    @*foreach (Component cm in field.LinkedComponentValues)
+                    {
+                        <div>
+                            @{
+                                @Html.SiteEditComponentPresentation(cm, "tcm:2033-4628-32", true, "")
+                                 var field1 = cm.Fields["header"];
+                                 <span>@Html.SiteEditField(cm, field1)@field1.Value</span>
+                             }
+                        </div>
+                    }*@
+
+
+                    //CommonHelper.GetComponent((@field.Value));
+
+
+
+
+                }
+                if (comp.Fields.Keys.Contains("description"))
+                {
+                    var field = comp.Fields["description"];
+                    <h4>@Html.SiteEditField(comp, field)@field.Value.ToString()</h4>
+                }
+                if (comp.Fields.Keys.Contains("imagelink"))
+                {
+                    var field = comp.Fields["imagelink"];
+                   
+                    <div>
+                        @Html.SiteEditField(comp, field)<img src="@field.LinkedComponentValues[0].Multimedia.Url" width="200px" height="160px" alt="@field.LinkedComponentValues[0].Title" />
+                     </div>
+                 }
+                }
+                
+                </div>
+                
+              }
+                
+            }
+        }
+        </div>
+    
+</div>
+

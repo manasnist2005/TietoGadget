@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  This file contains the Regions that are used on the website. Regions are specific for the eXperience Manager from SDL Tridion.
+  Regions can be rendered by calling a HtmlHelper and passing in the ID. Since this happens from a specific location in the Page-View (page template), 
+  there is no need to ty the region to a specific Page template here. (It's done implicitly by calling it only from the allowed views)
+  
+  Example: @XPM.RegionMarkup("HomepageRegion")
+-->
+<regions>
+  <!-- Define all the schema's that are used in a region here -->
+  <schemas>
+    <schema name="productdetails" tcmUri="tcm:12-4621-8" />
+    <schema name="productintro" tcmUri="tcm:291-4604-8" />
+    <schema name="TArticle" tcmUri="tcm:291-4739-8" />
+  </schemas>
+  <templates>
+    <!-- Define all the Component Templates that are used in a region here -->
+    <template name="ProductDetails" tcmUri="tcm:14-4629-32"  />
+    <template name="ProductIntroduction" tcmUri="tcm:14-4628-32" />
+    <template name="ArticleCT" tcmUri="tcm:14-4740-32" />
+  </templates>
+
+  <!-- Define regions below. Schema must match a schema name in the <schemas> tag. Template must match a template name in the <templates> tag -->
+  <region name="Page Header" id="PageHeader">
+    <allowedComponentTypes>
+      <componentType schema="SchemaName" template="ComponentTemplateName" />
+      <componentType schema="SchemaName" template="ComponentTemplateName" />
+    </allowedComponentTypes>
+    <minOccurs>1</minOccurs>
+    <maxOccurs>1</maxOccurs>
+  </region>
+
+  <region name="Homepage region" id="HomepageRegion">
+    <allowedComponentTypes>
+      <componentType schema="productdetails" template="ProductDetails" />
+      <componentType schema="SchemaName" template="ComponentTemplateName" />
+      <componentType schema="SchemaName" template="ComponentTemplateName" />
+      <componentType schema="SchemaName" template="ComponentTemplateName" />
+      <componentType schema="SchemaName" template="ComponentTemplateName" />
+    </allowedComponentTypes>
+  </region>
+
+  <region name="Content Page region" id="ContentPageRegion">
+    <allowedComponentTypes>
+      <componentType schema="SchemaName" template="ComponentTemplateName" />
+    </allowedComponentTypes>
+    <minOccurs>1</minOccurs>
+    <maxOccurs>1</maxOccurs>
+  </region>
+
+</regions>

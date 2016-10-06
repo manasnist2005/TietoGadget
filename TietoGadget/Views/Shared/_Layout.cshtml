@@ -1,0 +1,229 @@
+﻿@*  
+    This is a very basic Layout file which is used by the page view. It is not required by DD4T but allows you to render common
+    items for all Page Views if you wish
+*@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@RenderSection("Title")</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Le styles -->
+    <link href="/Static/assets/css/bootstrap.css" rel="stylesheet">  
+    <link href="/Static/assets/css/bootstrap-responsive.css" rel="stylesheet">    
+    <link href="/Static/assets/css/main.css" rel="stylesheet">
+    <link href="/Static/assets/css/app.css" rel="stylesheet">
+    <link href="/Static/libs/RateYo/jquery.rateyo.css" rel="stylesheet" />
+
+    <!-- For jquery grid -->
+    <link href="/Static/assets/css/Content/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="/Static/assets/css/Content/bootstrap-theme.min.css" rel="stylesheet" type="text/css">
+    <link href="/Static/assets/css/Content/grid-0.4.3.min.css" rel="stylesheet" type="text/css">
+
+    
+</head>
+@Html.Partial("~/Views/Component/header.cshtml")
+<body class="container"> 
+   
+        @RenderBody()
+    @Html.Partial("~/Views/Component/footer.cshtml")
+    
+    <!--  javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster 
+    <script src="/Static/libs/jquery.js"></script>-->
+    <script src="/Static/libs/bootstrap.js"></script>
+    <script src="/Static/libs/jquery.js"></script>
+
+    @*<script src="/Static/libs/Scripts/jquery-2.1.3.min.js" type="text/javascript"></script>*@
+    <script src="/Static/libs/Scripts/bootstrap.min.js" type="text/javascript"></script>
+    <script src="/Static/libs/Scripts/grid-0.4.3.min.js" type="text/javascript"></script>
+    <script src="/Static/libs/RateYo/jquery.rateyo.js" type="text/javascript"></script>
+
+    <script>
+        !function ($) {
+            $(function () {
+                // carousel demo
+                $('#myCarousel').carousel()
+            })
+        }(window.jQuery)
+    </script>
+    <script src="/Static/libs/holder.js"></script>
+    <script>
+    $(document).ready(function() {
+        $("#register").click(function() {
+            var name = $("#name").val();
+            var email = $("#email").val();
+            var password = $("#password").val();
+            var cpassword = $("#cpassword").val();
+            if (name == '' || email == '' || password == '' || cpassword == '') {
+                alert("Please fill all fields...!!!!!!");
+            } else if ((password.length) < 8) {
+                alert("Password should atleast 8 character in length...!!!!!!");
+            } else if (!(password).match(cpassword)) {
+                alert("Your passwords don't match. Try again?");
+            } else {
+                $.post("register.php", {
+                    name1: name,
+                    email1: email,
+                    password1: password
+                }, function(data) {
+                    if (data == 'You have Successfully Registered.....') {
+                        $("form")[0].reset();
+                    }
+                    alert(data);
+                });
+            }
+        });
+    });
+    </script>
+    <script type="text/javascript">
+    var userAge = '@Session["UserAge"]';
+    </script>
+    <script type="text/javascript">
+        var grid;
+        var itemId;
+        var avgRating;
+    function Add() {
+        $("#id").val("");
+        $("#content").val("");       
+        $("#SaveModal").modal("show");
+    }
+   
+    function Save() {        
+        var Content = $("#content").val();        
+        $.ajax({
+            url: "UGC/SaveComment", type: "POST",
+            data: { content: Content }
+        })
+            .done(function () {
+                grid.reload();
+                $("#SaveModal").modal("hide");
+            })
+            .fail(function () {
+                alert("Unable to save.");
+                $("#SaveModal").modal("hide");
+            });
+    }
+
+    function Edit(e) {
+        $("#commentId").val(e.data.id);
+        $("#contentedit").val(e.data.record.Content)
+        $("#ItemId").val("tcm:" + e.data.record.ItemPublicationId + "-" + e.data.record.ItemId + "-" + e.data.record.ItemType)
+        $("#EditModal").modal("show");
+    }
+    function EditComment() {
+        var CommentId = $("#commentId").val(); // $("#id").val();
+        var Content = $("#contentedit").val();        
+        var ItemTcmId = $("#ItemId").val();
+        $.ajax({
+            url: "UGC/EditComment", type: "POST",
+            data: { tcmID: ItemTcmId, commentId: CommentId, content: Content }
+        })
+            .done(function () {
+                grid.reload();
+                $("#EditModal").modal("hide");
+            })
+            .fail(function () {
+                alert("Unable to edit.");
+                $("#EditModal").modal("hide");
+            });
+    }
+    function Remove(e) {
+        $.ajax({ url: "UGC/RemoveComment", type: "POST", data: { id: e.data.id } })
+            .done(function () {
+                grid.reload();
+            })
+            .fail(function () {
+                alert("Unable to remove.");
+            });
+    }
+  
+    function CommentVoteUp(e) {
+        $.ajax({ url: "UGC/VoteCommentUp", type: "POST", data: { id: e.data.id } })
+            .done(function () {
+                grid.reload();
+            })
+            .fail(function () {
+                alert("Unable to Vote up.");
+            });
+    }
+    function CommentVoteDown(e) {
+        $.ajax({ url: "UGC/VoteCommentDown", type: "POST", data: { id: e.data.id } })
+            .done(function () {
+                grid.reload();
+            })
+            .fail(function () {
+                alert("Unable to Vote down.");
+            });
+    }
+    function PostRating(rating) {
+        $.ajax({ url: "UGC/PostRating", type: "POST", data: {tcmId: itemId, rating: rating } })
+            .done(function () {
+                alert("Thanks for rating");
+                grid.reload();
+            })
+            .fail(function () {
+                alert("Unable to post your rating");
+            });
+    }
+   
+    $(document).ready(function () {
+       
+        onSuccessFunc = function (response) {
+            //alert(response.avgRating)
+            document.getElementById('lblRating').innerHTML = response.avgRating;
+            avgRating = response.avgRating;
+            itemId = response.pageid;
+            grid.render(response);
+                };
+        grid = $("#grid").grid({
+            dataSource: { url: "/UGC/GetComments" ,success: onSuccessFunc },
+            dataKey: "Id",
+            uiLibrary: "bootstrap",
+            columns: [
+                { field: "Id", hidden: true }, { field: "ItemPublicationId", hidden: true },
+                { field: "ItemId", hidden: true }, { field: "ItemType", hidden: true },                
+                { field: "Content",sortable: false },
+                { field: "Score", width: 50, sortable: false }                
+                ,{ title: "", field: "VoteUp", width: 34, type: "icon", icon: "glyphicon-thumbs-up", tooltip: "Vote up", events: { "click": CommentVoteUp } }
+                ,{ title: "", field: "VoteDown", width: 34, type: "icon", icon: "glyphicon-thumbs-down", tooltip: "Vote down", events: { "click": CommentVoteDown } }
+                //, { title: "", field: "Delete", width: 34, type: "icon", icon: "glyphicon-remove", tooltip: "Delete", events: { "click": Remove } }
+                //,{ title: "", field: "Edit", width: 34, type: "icon", icon: "glyphicon-pencil", tooltip: "Edit", events: { "click": Edit } }
+            ]
+        });
+        $("#btnAddComment").on("click", Add);
+        $("#btnSave").on("click", Save);
+        $("#btnEdit").on("click", EditComment);
+        
+
+        $(function () {
+            var ratings = avgRating;
+            $("#rateYo").rateYo({
+                rating: ratings,
+                minValue: 1,
+                numStars: 5,
+                starWidth: "20px",
+                fullStar: true,
+                spacing: "10px",
+                onSet: function (rating, rateYoInstance) {
+                    //alert("Rating is set to: " + rating);
+                }
+            });
+            $("#rateYo").rateYo()
+              .on("rateyo.set", function (e, data) {                 
+                  PostRating(data.rating);                 
+              });
+
+        });
+
+    });
+    </script>
+
+
+
+    </body>
+    </html>

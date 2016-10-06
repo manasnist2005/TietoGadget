@@ -1,0 +1,142 @@
+﻿@model TietoGadget.Models.User
+
+@section Title
+    {
+    LogIn
+}
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    
+}
+
+<div class="container marketing">   
+    <div class="row"> 
+    <div class="col-md-4">
+        @using (Html.BeginForm("Index", "LogIn", "POST"))
+        {
+            @Html.ValidationSummary(true)
+            <fieldset>
+                <legend>Log In</legend>
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.Email)
+                </div>
+                <div class="editor-field">
+                    @Html.EditorFor(model => model.Email)
+                    @Html.ValidationMessageFor(model => model.Email)
+                </div>
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.Password)
+                </div>
+                <div class="editor-field">
+                    @Html.PasswordFor(model => model.Password)
+                    @Html.ValidationMessageFor(model => model.Password)
+                </div>                
+                <p>
+                    <br/>
+                    <input type="submit" class="btn btn-primary btn-md"  value="Log IN" /> @ViewBag.LoginMsg 
+                </p>
+            </fieldset>
+        }
+    </div>
+
+    <div class="col-md-6">
+        @using (Html.BeginForm("Register", "LogIn", "POST"))
+        {
+            @Html.ValidationSummary(true)
+            <fieldset>
+                <legend>Register</legend>
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.Email)
+                </div>
+                <div class="editor-field">
+                    @Html.EditorFor(model => model.Email)
+                    @Html.ValidationMessageFor(model => model.Email)
+                </div>
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.Password)
+                </div>
+                <div class="editor-field">
+                    @Html.PasswordFor(model => model.Password)
+                    @Html.ValidationMessageFor(model => model.Password)
+                </div>
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.Prefix)
+                </div>
+                <div class="editor-field">
+                    @Html.EditorFor(model => model.Prefix)
+                    @Html.ValidationMessageFor(model => model.Prefix)
+                </div>
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.Name)
+                </div>
+                <div class="editor-field">
+                    @Html.EditorFor(model => model.Name)
+                    @Html.ValidationMessageFor(model => model.Name)
+                </div>
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.Surname)
+                </div>
+                <div class="editor-field">
+                    @Html.EditorFor(model => model.Surname)
+                    @Html.ValidationMessageFor(model => model.Surname)
+                </div>
+
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.Company)
+                </div>
+                <div class="editor-field">
+                    @Html.EditorFor(model => model.Company)
+                    @Html.ValidationMessageFor(model => model.Company)
+                </div>
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.City)
+                </div>
+                <div class="editor-field">
+                    @Html.EditorFor(model => model.City)
+                    @Html.ValidationMessageFor(model => model.City)
+                </div>
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.State)
+                </div>
+                <div class="editor-field">
+                    @Html.EditorFor(model => model.State)
+                    @Html.ValidationMessageFor(model => model.State)
+                </div>
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.Zip)
+                </div>
+                <div class="editor-field">
+                    @Html.EditorFor(model => model.Zip)
+                    @Html.ValidationMessageFor(model => model.Zip)
+                </div>
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.Telephone)
+                </div>
+                <div class="editor-field">
+                    @Html.EditorFor(model => model.Telephone)
+                    @Html.ValidationMessageFor(model => model.Telephone)
+                </div>
+                <div class="editor-label">
+                   Birth Day<i> [mm/dd/yyyy] :</i>
+                </div>
+                <div class="editor-field">
+                    @Html.EditorFor(model => model.Birthdate)
+                    @Html.ValidationMessageFor(model => model.Birthdate)
+                </div>
+                <div class="editor-label">
+                   Workig Years[In years]
+                </div>
+                <div class="editor-field">
+                    @Html.EditorFor(model => model.Working_years)
+                    @Html.ValidationMessageFor(model => model.Working_years)
+                </div>
+                <p>
+                    <br />
+                    <input type="submit" class="btn btn-primary btn-md"  value="Register" /> @ViewBag.Message
+                </p>
+            </fieldset>
+        }
+    </div>
+   </div>
+</div>
+
